@@ -1,15 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import { createStore, combineReducers } from 'redux'
-import { reducer as reduxFormReducer } from 'redux-form'
+import { createStore } from 'redux'
+import reducer from './forms/reducer'
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-const reducer = combineReducers({
-  form: reduxFormReducer // mounted under "form"
-})
 const store = (window.devToolsExtension
   ? window.devToolsExtension()(createStore)
   : createStore)(reducer)
