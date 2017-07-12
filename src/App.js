@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import WizardForm from './forms/WizardForm'
+import apigClientFactory from 'aws-api-gateway-client'
 
-const showResults = values =>
+let config = {
+  invokeUrl:'https://.execute-api.us-west-2.amazonaws.com',
+  //apiKey: ''
+};
+let apigClient = apigClientFactory.newClient(config);
+
+const showResults = values => {
   new Promise(resolve => {
     setTimeout(() => {
       // simulate server latency
@@ -11,6 +18,35 @@ const showResults = values =>
       resolve()
     }, 500)
   })
+
+  var params = {
+    //This is where any header, path, or querystring request params go. The key is the parameter named as defined in the API
+  };
+  // Template syntax follows url-template https://www.npmjs.com/package/url-template
+  var pathTemplate = '/prod/add_user'
+  var method = 'GET';
+  var additionalParams = {
+    //If there are any unmodeled query parameters or headers that need to be sent with the request you can add them here
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
+    },
+    queryParams: {
+      TableName: 'users'
+    }
+  };
+  var body = {
+    //This is where you define the body of the request
+  }; 
+
+  apigClient.invokeApi(params, pathTemplate, method, additionalParams, body)
+    .then(function(result){
+        //This is where you would put a success callback
+        console.log(result);
+    }).catch( function(result){
+        //This is where you would put an error callback
+    });
+}
 
 class App extends Component {
   render() {
