@@ -8,7 +8,7 @@ var createCORSRequest = function(method, url) {
   if ("withCredentials" in xhr) {
     // Most browsers.
     xhr.open(method, url, true);
-  } else if (typeof XDomainRequest != "undefined") {
+  } else if (typeof XDomainRequest !== "undefined") {
     // IE8 & IE9
     xhr = new XDomainRequest();
     xhr.open(method, url);
@@ -47,6 +47,7 @@ const showResults = values => {
   xhr.setRequestHeader('accept-encoding', 'gzip, deflate');
   xhr.setRequestHeader('accept-language', 'en-US,en;q=0.8');
   xhr.setRequestHeader('accept', 'application/json');
+  xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/534.14 (KHTML, like Gecko) Chrome/9.0.600.0 Safari/534.14');
   xhr.setRequestHeader('x-api-key', '');
   xhr.setRequestHeader('TableName', 'users');
   xhr.send();
