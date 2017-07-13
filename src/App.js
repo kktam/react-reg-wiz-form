@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import WizardForm from './forms/WizardForm'
-import apigClientFactory from 'aws-api-gateway-client'
+import WizardForm from './forms/WizardForm';
 
-let config = {
-  invokeUrl:'https://.execute-api.us-west-2.amazonaws.com',
-  //apiKey: ''
-};
-let apigClient = apigClientFactory.newClient(config);
+var createCORSRequest = function(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    // Most browsers.
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    // IE8 & IE9
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    // CORS not supported.
+    xhr = null;
+  }
+  return xhr;
+}
 
 const showResults = values => {
   new Promise(resolve => {
@@ -19,33 +28,28 @@ const showResults = values => {
     }, 500)
   })
 
-  var params = {
-    //This is where any header, path, or querystring request params go. The key is the parameter named as defined in the API
-  };
-  // Template syntax follows url-template https://www.npmjs.com/package/url-template
-  var pathTemplate = '/prod/add_user'
+  var url = 'https://.execute-api.us-west-2.amazonaws.com/prod/add_user';
   var method = 'GET';
-  var additionalParams = {
-    //If there are any unmodeled query parameters or headers that need to be sent with the request you can add them here
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true
-    },
-    queryParams: {
-      TableName: 'users'
-    }
-  };
-  var body = {
-    //This is where you define the body of the request
-  }; 
+  var xhr = createCORSRequest(method, url);
 
-  apigClient.invokeApi(params, pathTemplate, method, additionalParams, body)
-    .then(function(result){
-        //This is where you would put a success callback
-        console.log(result);
-    }).catch( function(result){
-        //This is where you would put an error callback
-    });
+  xhr.onload = function () {
+    var result = xhr.responseText;
+    // Success code goes here.
+    window.alert(`aws success:\n\n${JSON.stringify(result, null, 2)}`)    
+  };
+
+  xhr.onerror = function () {
+    var result = xhr.responseText;    
+    // Error code goes here.
+    window.alert(`aws failed:\n\n${JSON.stringify(result, null, 2)}`)    
+  };
+
+  xhr.setRequestHeader('accept-encoding', 'gzip, deflate');
+  xhr.setRequestHeader('accept-language', 'en-US,en;q=0.8');
+  xhr.setRequestHeader('accept', 'application/json');
+  xhr.setRequestHeader('x-api-key', '');
+  xhr.setRequestHeader('TableName', 'users');
+  xhr.send();
 }
 
 class App extends Component {
