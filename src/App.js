@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import logo from './logo.svg';
 import './App.css';
 import WizardForm from './forms/WizardForm';
+
+// Amazon API Gateway deployment information 
+const AWS_API_INSTANCE = '';
+const API_KEY = '';
 
 var createCORSRequest = function(method, url) {
   var xhr = new XMLHttpRequest();
@@ -20,15 +25,75 @@ var createCORSRequest = function(method, url) {
 }
 
 const showResults = values => {
+
+  // append primary key to data
+  values["id"] = _.uniqueId();
+
+  let awsData = {};
+  Object.keys(values).map(function(k, i) {
+    let dataType = typeof(values[k]);
+    let result = null;
+    switch (dataType) {
+      case 'string': result = { "S": values[k] }; break;
+      case 'number': result = { "N": values[k] }; break;
+      case 'boolean': result = { "BOOL": values[k] }; break; 
+      case 'object': result = { "S": JSON.stringify(values[k]) }; break;      
+      case 'undefined': result = { "S": "" }; break; 
+      default: result = { "S": "" }; break;                        
+    }
+
+    // append attribute to aws data
+    awsData[k] = result;
+
+    return (
+        result
+    );
+  });
+
+  window.alert(`You made aws data:\n\n${JSON.stringify(awsData, null, 2)}`)
+
+  let postData = {
+    "Item" : awsData
+  }
+
+  // eslint-disable-next-line
+  let postDataStr = JSON.stringify(postData);
+
   new Promise(resolve => {
     setTimeout(() => {
       // simulate server latency
-      window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`)
+      window.alert(`You submitted:\n\n${JSON.stringify(postData, null, 2)}`)
       resolve()
     }, 500)
   })
 
-  var url = 'https://.execute-api.us-west-2.amazonaws.com/prod/add_user';
+  getAllUsers();
+
+  var url = 'https://' + AWS_API_INSTANCE + '.execute-api.us-west-2.amazonaws.com/prod/add_user?TableName=users';
+  var method = 'POST';
+  var xhr = createCORSRequest(method, url);
+
+  xhr.onload = function () {
+    var result = xhr.responseText;
+    // Success code goes here.
+    window.alert(`aws success:\n\n${JSON.stringify(result, null, 2)}`)    
+  };
+
+  xhr.onerror = function () {
+    var result = xhr.responseText;    
+    // Error code goes here.
+    window.alert(`aws failed:\n\n${JSON.stringify(result, null, 2)}`)    
+  };
+
+  xhr.setRequestHeader('accept-language', 'en-US,en;q=0.8');
+  xhr.setRequestHeader('accept', 'application/json');
+  xhr.setRequestHeader('x-api-key', API_KEY);
+  xhr.send(postData);
+}
+
+// eslint-disable-next-line
+const getAllUsers = () => {
+  var url = 'https://' + AWS_API_INSTANCE + '.execute-api.us-west-2.amazonaws.com/prod/add_user';
   var method = 'GET';
   var xhr = createCORSRequest(method, url);
 
@@ -44,11 +109,9 @@ const showResults = values => {
     window.alert(`aws failed:\n\n${JSON.stringify(result, null, 2)}`)    
   };
 
-  xhr.setRequestHeader('accept-encoding', 'gzip, deflate');
   xhr.setRequestHeader('accept-language', 'en-US,en;q=0.8');
   xhr.setRequestHeader('accept', 'application/json');
-  xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/534.14 (KHTML, like Gecko) Chrome/9.0.600.0 Safari/534.14');
-  xhr.setRequestHeader('x-api-key', '');
+  xhr.setRequestHeader('x-api-key', API_KEY);
   xhr.setRequestHeader('TableName', 'users');
   xhr.send();
 }
