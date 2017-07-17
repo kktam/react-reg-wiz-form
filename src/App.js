@@ -4,6 +4,9 @@ import logo from './logo.svg';
 import './App.css';
 import WizardForm from './forms/WizardForm';
 
+// company information
+const COMPANY = "FastPay"
+
 // Amazon API Gateway deployment information 
 const AWS_API_INSTANCE = '';
 const API_KEY = '';
@@ -122,12 +125,15 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+          <h2> {COMPANY} - Sign up form</h2>
         </div>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <WizardForm onSubmit={showResults} />
+        <div className="App-footer">
+          <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC 3.0 BY</a></div>
+        </div>
       </div>
     );
   }
