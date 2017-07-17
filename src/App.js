@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import WizardForm from './forms/WizardForm'
+import insert from './api/tables'
 
 const showResults = values =>
   new Promise(resolve => {
