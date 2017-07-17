@@ -50,9 +50,11 @@ const showResults = values => {
     );
   });
 
-  window.alert(`You made aws data:\n\n${JSON.stringify(awsData, null, 2)}`)
+  // debug
+  //window.alert(`You made aws data:\n\n${JSON.stringify(awsData, null, 2)}`)
 
   let postData = {
+    "TableName": { "S": "users" },
     "Item" : awsData
   }
 
@@ -66,8 +68,6 @@ const showResults = values => {
       resolve()
     }, 500)
   })
-
-  getAllUsers();
 
   var url = 'https://' + AWS_API_INSTANCE + '.execute-api.us-west-2.amazonaws.com/prod/add_user?TableName=users';
   var method = 'POST';
@@ -85,10 +85,10 @@ const showResults = values => {
     window.alert(`aws failed:\n\n${JSON.stringify(result, null, 2)}`)    
   };
 
-  xhr.setRequestHeader('accept-language', 'en-US,en;q=0.8');
-  xhr.setRequestHeader('accept', 'application/json');
+  xhr.setRequestHeader('Content-Type', 'application/json');  
   xhr.setRequestHeader('x-api-key', API_KEY);
-  xhr.send(postData);
+  xhr.setRequestHeader('TableName', 'users');  
+  xhr.send(postDataStr);
 }
 
 // eslint-disable-next-line
