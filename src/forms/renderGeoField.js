@@ -1,6 +1,6 @@
 import React from 'react'
 import Geosuggest from 'react-geosuggest'
-
+import styles from './renderGeoField.css';
 
 const renderGeoField = ({ input, label, type, meta: { touched, error } }) =>
   <div>
@@ -12,6 +12,7 @@ const renderGeoField = ({ input, label, type, meta: { touched, error } }) =>
         placeholder={label} 
         type={type} 
         onChange={input.onChange} 
+        styles={styles}
       />
       {touched &&
         error &&
