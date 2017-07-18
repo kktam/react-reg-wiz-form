@@ -17,6 +17,10 @@ This is a custom user registration form that uses React, AWS API and Lambda to s
 [coveralls-badge]: https://coveralls.io/repos/github/kktam/react-reg-wiz-form/badge.svg?branch=master
 [coveralls]: https://coveralls.io/github/kktam/react-reg-wiz-form?branch=master
 
+# Demo
+
+A live demo of this project is located at (http://react-reg-wiz-form.s3-website-us-west-2.amazonaws.com/).
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
