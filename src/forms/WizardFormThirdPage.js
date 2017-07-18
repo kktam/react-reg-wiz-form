@@ -1,6 +1,10 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
+import renderField from './renderField'
+import renderGeoField from './renderGeoField'
 import validate from './validate'
+import 'react-select/dist/react-select.css';
+
 const colors = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet']
 
 const renderColorSelector = ({ input, meta: { touched, error } }) =>
@@ -20,10 +24,17 @@ const renderColorSelector = ({ input, meta: { touched, error } }) =>
       </span>}
   </div>
 
+function addressChanged(val) {
+  console.log("GEO Selected: " + JSON.stringify(val));
+}
+
 const WizardFormThirdPage = props => {
   const { handleSubmit, pristine, previousPage, submitting } = props
   return (
     <form onSubmit={handleSubmit}>
+      <div>       
+        <Field name="address" type="address" component={renderGeoField} label="Address" onChange={addressChanged} />      
+      </div>         
       <div>
         <label>Favorite Color</label>
         <Field name="favoriteColor" component={renderColorSelector} />
