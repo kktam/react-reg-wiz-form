@@ -1,27 +1,10 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import renderField from './renderField'
+import renderChoice from './renderChoice'
 import renderGeoField from './renderGeoField'
 import validate from './validate'
-
-const colors = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet']
-
-const renderColorSelector = ({ input, meta: { touched, error } }) =>
-  <div>
-    <select {...input}>
-      <option value="">Select a color...</option>
-      {colors.map(val =>
-        <option value={val} key={val}>
-          {val}
-        </option>
-      )}
-    </select>
-    {touched &&
-      error &&
-      <span>
-        {error}
-      </span>}
-  </div>
+import normalizePhone from './normalizePhone'
 
 function addressChanged(val) {
   console.log("GEO Selected: " + JSON.stringify(val));
@@ -36,7 +19,7 @@ const WizardFormThirdPage = props => {
       </div>         
       <div>
         <label>Favorite Color</label>
-        <Field name="favoriteColor" component={renderColorSelector} />
+        <Field name="favoriteColor" component={renderChoice} />
       </div>
       <div>
         <label htmlFor="employed">Employed</label>
@@ -49,6 +32,18 @@ const WizardFormThirdPage = props => {
           />
         </div>
       </div>
+      <div>
+        <label>Phone</label>
+        <div>
+          <Field
+            name="phone"
+            component={renderField}            
+            type="text"
+            placeholder="Phone Number"
+            normalize={normalizePhone}
+          />
+        </div>
+      </div>      
       <div>
         <label>Notes</label>
         <div>

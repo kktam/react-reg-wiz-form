@@ -5,7 +5,7 @@ import './App.css';
 import WizardForm from './forms/WizardForm';
 
 // company information
-const COMPANY = "FastPay"
+const COMPANY = "ACME"
 
 // Amazon API Gateway deployment information 
 const AWS_API_INSTANCE = '';
@@ -128,7 +128,6 @@ class App extends Component {
           <h2> {COMPANY} - Sign up form</h2>
         </div>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <WizardForm onSubmit={showResults} />
         <div className="App-footer">
