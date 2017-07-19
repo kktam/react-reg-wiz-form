@@ -3,7 +3,6 @@ import { Field, reduxForm } from 'redux-form'
 import renderField from './renderField'
 import renderGeoField from './renderGeoField'
 import validate from './validate'
-import 'react-select/dist/react-select.css';
 
 const colors = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet']
 
@@ -33,7 +32,7 @@ const WizardFormThirdPage = props => {
   return (
     <form onSubmit={handleSubmit}>
       <div>       
-        <Field name="address" type="address" component={renderGeoField} label="Address" onChange={addressChanged} />      
+        <Field name="address" type="text" component={renderGeoField} label="Address" onChange={addressChanged} />      
       </div>         
       <div>
         <label>Favorite Color</label>
