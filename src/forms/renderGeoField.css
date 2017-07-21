@@ -1,6 +1,15 @@
 .ubilabs {
-  vertical-align: middle;
+  vertical-align: center;
 }
+.geosuggest-label {
+  font-size: 18px;
+  font-size: 1rem;
+  position: relative;
+  width: 50%;
+  margin: 1em auto;
+  text-align: left;
+}
+
 /**
  * The geosuggest module
  * NOTE: duplicated font-sizes' are for browsers which don't support rem (only IE 8)
@@ -9,7 +18,7 @@
   font-size: 18px;
   font-size: 1rem;
   position: relative;
-  width: 50%;
+  width: 100%;
   margin: 1em auto;
   text-align: left;
 }

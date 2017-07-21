@@ -38,7 +38,7 @@ class renderGeoField extends Component {
     const { input: { value, onChange }, label, type, meta: { touched, error } } = this.props
 
     return (
-      <div>
+      <div className="geosuggest-label">
         <label>
           {label}
         </label>

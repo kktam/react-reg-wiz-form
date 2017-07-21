@@ -1,5 +1,6 @@
 import React from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { connect } from 'react-redux'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import renderField from './renderField'
 import renderChoice from './renderChoice'
 import renderGeoField from './renderGeoField'
@@ -10,8 +11,8 @@ function addressChanged(val) {
   console.log("GEO Selected: " + JSON.stringify(val));
 }
 
-const WizardFormThirdPage = props => {
-  const { handleSubmit, pristine, previousPage, submitting } = props
+let WizardFormThirdPage = props => {
+  const { handleSubmit, pristine, previousPage, submitting, isBillingSameValue } = props
   return (
     <form onSubmit={handleSubmit}>
       <div>       
@@ -22,16 +23,26 @@ const WizardFormThirdPage = props => {
         <Field name="favoriteColor" component={renderChoice} />
       </div>
       <div>
-        <label htmlFor="employed">Employed</label>
+        <label htmlFor="isBillingSame">is Same As Home Address</label>
         <div>
           <Field
-            name="employed"
-            id="employed"
+            name="isBillingSame"
+            id="isBillingSame"
             component="input"
             type="checkbox"
           />
         </div>
       </div>
+      <div>       
+        {!isBillingSameValue && <Field name="billing_address" 
+            type="text" component={renderGeoField} 
+            label="Billing Address" 
+            disabled={isBillingSameValue} />}
+        {isBillingSameValue && <Field name="billing_address" 
+            type="text" component={renderField} 
+            label="Billing Address" 
+            disabled={isBillingSameValue} />}                
+      </div>     
       <div>
         <label>Phone</label>
         <div>
@@ -61,9 +72,21 @@ const WizardFormThirdPage = props => {
     </form>
   )
 }
-export default reduxForm({
+
+WizardFormThirdPage = reduxForm({
   form: 'wizard', //Form name is same
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
   validate
 })(WizardFormThirdPage)
+
+const selector = formValueSelector('wizard')
+
+WizardFormThirdPage = connect(
+  state => ({
+    isBillingSameValue: selector(state, 'isBillingSame'),
+    secondValue: selector(state, 'second')
+  })
+)(WizardFormThirdPage)
+
+export default WizardFormThirdPage
