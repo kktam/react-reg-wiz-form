@@ -12,7 +12,7 @@ function addressChanged(val) {
 }
 
 let WizardFormThirdPage = props => {
-  const { handleSubmit, pristine, previousPage, submitting, isBillingSameValue } = props
+  const { handleSubmit, pristine, previousPage, submitting, address, isBillingSameValue } = props
   return (
     <form onSubmit={handleSubmit}>
       <div>       
@@ -40,7 +40,8 @@ let WizardFormThirdPage = props => {
             disabled={isBillingSameValue} />}
         {isBillingSameValue && <Field name="billing_address" 
             type="text" component={renderField} 
-            label="Billing Address" 
+            label="Billing Address"
+            copyAddressValue={address}
             disabled={isBillingSameValue} />}                
       </div>     
       <div>
@@ -85,7 +86,7 @@ const selector = formValueSelector('wizard')
 WizardFormThirdPage = connect(
   state => ({
     isBillingSameValue: selector(state, 'isBillingSame'),
-    secondValue: selector(state, 'second')
+    address: selector(state, 'address')
   })
 )(WizardFormThirdPage)
 

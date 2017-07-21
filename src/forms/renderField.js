@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './renderField.css'
 
-const renderField = ({ input, disabled, label, type, meta: { touched, error } }) =>
+const renderField = ({ input, disabled, copyAddressValue, label, type, meta: { touched, error } }) =>
   <div className="renderField">
     <label>
       {label}
@@ -19,6 +19,7 @@ const renderField = ({ input, disabled, label, type, meta: { touched, error } })
         placeholder={label} 
         type={type}
         styles={styles}
+        value={copyAddressValue}
         disabled />}        
       {touched &&
         error &&
