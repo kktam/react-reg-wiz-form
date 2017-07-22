@@ -7,6 +7,8 @@ import renderGeoField from './renderGeoField'
 import validate from './validate'
 import normalizePhone from './normalizePhone'
 
+const colors = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet']
+
 function addressChanged(val) {
   console.log("GEO Selected: " + JSON.stringify(val));
 }
@@ -20,7 +22,7 @@ let WizardFormThirdPage = props => {
       </div>         
       <div>
         <label>Favorite Color</label>
-        <Field name="favoriteColor" component={renderChoice} />
+        <Field name="favoriteColor" component={renderChoice} choices={colors} />
       </div>
       <div>
         <label htmlFor="isBillingSame">is Same As Home Address</label>
