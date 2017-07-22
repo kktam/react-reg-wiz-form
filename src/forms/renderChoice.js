@@ -1,9 +1,9 @@
 import React from 'react'
 
-const renderChoice = ({ input, choices, meta: { touched, error } }) =>
+const renderChoice = ({ input, label, choices, meta: { touched, error } }) =>
   <div>
     <select {...input}>
-      <option value="">Select a color...</option>
+      <option value="">{label}</option>
       {choices.map(val =>
         <option value={val} key={val}>
           {val}
