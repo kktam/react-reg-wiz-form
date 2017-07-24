@@ -1,62 +1,26 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
+import Payment from 'payment'
+import CreditCards from 'react-credit-cards'
 import $ from 'jquery'
-import Card from 'card'
-import 'card/dist/card.css'
 
 class renderCreditCard extends Component {
   constructor(props){
     super(props)
     this.onChange = this.onChange.bind(this)           
-    this.state = { select: "none", typed: "none" }  
+    this.state = {
+      number: '',
+      name: '',
+      exp: '',
+      cvc: '',
+      focused: '',
+    };
   }
 
   componentDidMount() {
-      if (this._creditCard != null) {
-          const { creditCardRef } = this.refs;
-          this._creditCard = $(creditCardRef);
-
-          this._creditCard = new Card({
-              
-              // a selector or DOM element for the form where users will
-              // be entering their information
-              form: 'creditCardForm', // *required*
-              // a selector or DOM element for the container
-              // where you want the card to appear
-              container: '.card-wrapper', // *required*
-
-              formSelectors: {
-                  numberInput: 'input#number', // optional — default input[name="number"]
-                  expiryInput: 'input#expiry', // optional — default input[name="expiry"]
-                  cvcInput: 'input#cvc', // optional — default input[name="cvc"]
-                  nameInput: 'input#name' // optional - defaults input[name="name"]
-              },
-
-              width: 200, // optional — default 350px
-              formatting: true, // optional - default true
-
-              // Strings for translation - optional
-              messages: {
-                  validDate: 'valid\ndate', // optional - default 'valid\nthru'
-                  monthYear: 'mm/yyyy', // optional - default 'month/year'
-              },
-
-              // Default placeholders for rendered fields - optional
-              placeholders: {
-                  number: '•••• •••• •••• ••••',
-                  name: 'Full Name',
-                  expiry: '••/••',
-                  cvc: '•••'
-              },
-
-              masks: {
-                  cardNumber: '•' // optional - mask card number
-              },
-
-              // if true, will log helpful messages for setting up Card
-              debug: false // optional - default false
-          });
-      }
+    Payment.formatCardNumber(document.querySelector('[name="number"]'));
+    Payment.formatCardExpiry(document.querySelector('[name="expiry"]'));
+    Payment.formatCardCVC(document.querySelector('[name="cvc"]'));
   }
 
   onChange(d) {
@@ -69,30 +33,92 @@ class renderCreditCard extends Component {
     // }
   }    
 
-  render() {
-    const { input: { value, onChange }, label, type, meta: { touched, error } } = this.props
+  handleInputFocus = (e) => {
+    const target = e.target;
 
+    this.setState({
+      focused: target.name,
+    });
+  };
+
+  handleInputChange = (e) => {
+    const target = e.target;
+
+    if (target.name === 'number') {
+      this.setState({
+        [target.name]: target.value.replace(/ /g, ''),
+      });
+    }
+    else if (target.name === 'expiry') {
+      this.setState({
+        [target.name]: target.value.replace(/ |\//g, ''),
+      });
+    }
+    else {
+      this.setState({
+        [target.name]: target.value,
+      });
+    }
+  };
+
+  handleCallback(type, isValid) {
+    console.log(type, isValid); //eslint-disable-line no-console
+  }
+
+  render() {
+    const { name, number, expiry, cvc, focused } = this.state;
     return (
-      <div id="creditCardContainer" className="">
-        <label>
-          {label}
-        </label>
-        <div id="creditCardFormWrapper">
-          <div id="creditCardForm" ref="creditCardForm" />
-          <div className="form-container active">
-            <input placeholder="Card number" type="tel" name="number" />
-            <input placeholder="Full name" type="text" name="name" />
-            <input placeholder="MM/YY" type="tel" name="expiry" />
-            <input placeholder="CVC" type="number" name="cvc" />
-          </div>
-          {touched &&
-            error &&
-            <span>
-              {error}
-            </span>}
+      <div className="creditCardContainer">
+        <h1>React Credit Cards</h1>
+        <div className="creditCardForm">
+          <CreditCards
+            number={number}
+            name={name}
+            expiry={expiry}
+            cvc={cvc}
+            focused={focused}
+            callback={this.handleCallback}
+          />
+          <form>
+            <div>
+              <input
+                type="tel"
+                name="number"
+                placeholder="Card Number"
+                onKeyUp={this.handleInputChange}
+                onFocus={this.handleInputFocus}
+              />
+              <div>E.g.: 49..., 51..., 36..., 37...</div>
+            </div>
+            <div>
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                onKeyUp={this.handleInputChange}
+                onFocus={this.handleInputFocus}
+              />
+            </div>
+            <div>
+              <input
+                type="tel"
+                name="expiry"
+                placeholder="Valid Thru"
+                onKeyUp={this.handleInputChange}
+                onFocus={this.handleInputFocus}
+              />
+              <input
+                type="tel"
+                name="cvc"
+                placeholder="CVC"
+                onKeyUp={this.handleInputChange}
+                onFocus={this.handleInputFocus}
+              />
+            </div>
+          </form>
         </div>
       </div>
-    )
+    );
   }
 }
 

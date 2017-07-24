@@ -1,0 +1,88 @@
+@import './shared.scss';
+@import './../../node_modules/react-credit-cards/lib/styles.scss';
+
+.creditCardContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &__content {
+    flex: 1;
+    margin: 0 auto;
+    max-width: 480px;
+    padding: 15px;
+  }
+
+  &__footer {
+    align-items: center;
+    border-top: 1px solid #999;
+    display: flex;
+    justify-content: space-between;
+    line-height: 1;
+    margin-top: 30px;
+    padding: 10px 15px;
+  }
+
+  form {
+    margin-top: 30px;
+
+    div {
+      + div {
+        margin-top: 15px;
+      }
+
+      > div {
+        color: #999;
+        margin-top: 5px;
+      }
+
+      &:nth-of-type(3) {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+
+        input {
+          &:first-child {
+            flex: 2;
+          }
+
+          &:last-child {
+            flex: 1;
+            margin-left: 20px;
+          }
+        }
+      }
+    }
+
+    input {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: none;
+      display: block;
+      font-size: 20px;
+      outline: none;
+      padding: 10px;
+      transition: all 0.4s;
+      width: 100%;
+
+      &:active,
+      &:focus {
+        border-color: #666;
+      }
+    }
+  }
+}
+
+@media (min-width: 800px) {
+  .creditCardContainer {
+    &__content {
+      display: flex;
+      max-width: 700px;
+    }
+
+    form {
+      margin-left: 30px;
+      margin-top: 0;
+    }
+  }
+}
