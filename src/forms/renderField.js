@@ -11,14 +11,12 @@ const renderField = ({ input, disabled, copyAddressValue, label, type, meta: { t
         {...input} 
         className="renderField__input"
         placeholder={label} 
-        type={type}
-        styles={styles} />}
+        type={type} />}
       {disabled && <input 
         {...input} 
         className="renderField__input"
         placeholder={label} 
         type={type}
-        styles={styles}
         value={copyAddressValue}
         disabled />}        
       {touched &&
