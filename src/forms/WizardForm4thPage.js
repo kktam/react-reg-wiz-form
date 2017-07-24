@@ -5,8 +5,11 @@ import renderField from './renderField'
 import renderChoice from './renderChoice'
 import validate from './validate'
 import normalizePhone from './normalizePhone'
+import MaskedInput from './MaskedInput'
+import renderCreditCard from './renderCreditCard'
 
 const paymentOptions = ['Visa', 'Master Card', 'American Express', 'Pay Pal']
+let cvc = null;
 
 function creditCardChanged(val) {
 
@@ -25,11 +28,10 @@ let WizardForm4thPage = props => {
       </div>      
       <div>       
         <Field name="creditCard" 
+          cvc = {cvc}
           type="text" 
-          component={renderField} 
-          label="Credit Card" 
-          placeholder="Credit Card number"
-          normalize={normalizePhone}          
+          component={renderCreditCard} 
+          label="Credit Card"        
           onChange={creditCardChanged} />      
       </div>
       <div>
