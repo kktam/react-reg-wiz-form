@@ -4,6 +4,8 @@ import Payment from 'payment'
 import CreditCards from 'react-credit-cards'
 import $ from 'jquery'
 
+import './renderCreditCard.css'
+
 class renderCreditCard extends Component {
   constructor(props){
     super(props)
