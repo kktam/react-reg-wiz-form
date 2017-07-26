@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import renderField from './renderField'
@@ -15,10 +15,29 @@ function creditCardChanged(val) {
 
 }
 
-let WizardForm4thPage = props => {
-  const { handleSubmit, pristine, previousPage, submitting, paymentOptionsSelected, creditCardSelected } = props
+let WizardForm4thPage = class WizardForm4thPage extends Component {
+  constructor(props){
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)           
+    this.state = {
+      number: '',
+      name: '',
+      exp: '',
+      cvc: '',
+      focused: '',
+    };
+  }
+
+  handleSubmit(result) {
+    if (this.props.handleSubmit != null) {
+      this.props.handleSubmit(result);
+    }
+  }
+
+  render () {
+  const { handleSubmit, pristine, previousPage, submitting, paymentOptionsSelected, creditCardSelected } = this.props
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={this.handleSubmit}>
       <div>
         <label>Payment Options</label>
         <Field name="paymentOptions" 
@@ -43,7 +62,7 @@ let WizardForm4thPage = props => {
         </button>
       </div>
     </form>
-  )
+  )}
 }
 
 WizardForm4thPage = reduxForm({
