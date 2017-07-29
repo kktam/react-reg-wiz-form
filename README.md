@@ -19,7 +19,7 @@ This is a custom user registration form that uses React, AWS API and Lambda to s
 
 # Demo
 
-A live demo of this project is located at (http://react-reg-wiz-form.s3-website-us-west-2.amazonaws.com/).
+A live demo of this project is located at [here](https://d2pmhg6dybu2tk.cloudfront.net/index.html).
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
