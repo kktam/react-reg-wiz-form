@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
+import { Field } from 'redux-form'
 import Payment from 'payment'
 import CreditCards from 'react-credit-cards'
 import $ from 'jquery'
@@ -68,47 +69,61 @@ class renderCreditCard extends Component {
   }
 
   render() {
-    const { name, number, expiry, cvc, focused } = this.state;
+    const { name, number, expiry, cvc, focused } = this.props;
     return (
       <div className="creditCardContainer">
         <h1>React Credit Cards</h1>
         <div className="creditCardForm">
-          <CreditCards
-            number={number}
-            name={name}
-            expiry={expiry}
-            cvc={cvc}
-            focused={focused}
-            callback={this.handleCallback}
-          />
-          <form>
+            <CreditCards
+              number={number}
+              name={name}
+              expiry={expiry}
+              cvc={cvc}
+              focused={focused}
+              callback={this.handleCallback}
+            />
             <div>
-              <input
-                type="tel"
+              <Field
+                component="input"
                 name="number"
-                placeholder="Card Number"
-                onKeyUp={this.handleInputChange}
+                placeholder="Card number"
+                type="tel"
+                onKeyUp={this.handleInputChange}                
                 onFocus={this.handleInputFocus}
               />
-              <div>E.g.: 49..., 51..., 36..., 37...</div>
+              <div>E.g.: 49..., 51..., 36..., 37...</div>              
             </div>
             <div>
-              <input
-                type="text"
+              <Field
+                component="input"
                 name="name"
                 placeholder="Name"
-                onKeyUp={this.handleInputChange}
+                type="text"
+                onKeyUp={this.handleInputChange}                
                 onFocus={this.handleInputFocus}
               />
             </div>
             <div>
-              <input
-                type="tel"
+              <Field
+                component="input"
                 name="expiry"
                 placeholder="Valid Thru"
-                onKeyUp={this.handleInputChange}
+                type="tel"
+                onKeyUp={this.handleInputChange}                
                 onFocus={this.handleInputFocus}
               />
+            </div>
+            <div>
+              <Field
+                component="input"
+                name="cvc"
+                placeholder="CVC"
+                type="tel"
+                onKeyUp={this.handleInputChange}                
+                onFocus={this.handleInputFocus}
+              />
+            </div>                                                        
+            <div>
               <input
                 type="tel"
                 name="cvc"
@@ -117,7 +132,6 @@ class renderCreditCard extends Component {
                 onFocus={this.handleInputFocus}
               />
             </div>
-          </form>
         </div>
       </div>
     );
@@ -125,6 +139,10 @@ class renderCreditCard extends Component {
 }
 
 renderCreditCard.propTypes = {
+  number: PropTypes.number.optional,
+  name: PropTypes.string.optional,
+  expiry: PropTypes.string.optional,
+  cvc: PropTypes.string.optional,  
   onChange: PropTypes.func, 
   input: PropTypes.any,
   label: PropTypes.string,

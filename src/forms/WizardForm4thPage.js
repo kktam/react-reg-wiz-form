@@ -20,10 +20,10 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)           
     this.state = {
-      number: '',
-      name: '',
-      exp: '',
-      cvc: '',
+      number: (props.number) ? props.number : '',
+      name: (props.name) ? props.name : '',
+      exp: (props.expiry) ? props.expiry : '',
+      cvc: (props.cvc) ? props.cvc : '',
       focused: '',
     };
   }
@@ -46,10 +46,9 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
           choices={paymentOptions} />
       </div>      
       <div>       
-        <Field name="creditCard" 
-          cvc = {cvc}
+        <renderCreditCard name="creditCard" 
+          {...this.props}
           type="text" 
-          component={renderCreditCard} 
           label="Credit Card"        
           onChange={creditCardChanged} />      
       </div>
@@ -73,6 +72,7 @@ WizardForm4thPage = reduxForm({
 })(WizardForm4thPage)
 
 const selector = formValueSelector('wizard')
+const mapStateToProps = state => selector(state, 'number', 'name', 'expiry', 'cvc')
 
 WizardForm4thPage = connect(
   state => ({
