@@ -31,35 +31,14 @@ const showResults = values => {
 
   // append primary key to data
   values["id"] = _.uniqueId();
+  values["userId"] = values["id"];  
 
   let awsData = {};
-  Object.keys(values).map(function(k, i) {
-    let dataType = typeof(values[k]);
-    let result = null;
-    switch (dataType) {
-      case 'string': result = { "S": values[k] }; break;
-      case 'number': result = { "N": values[k] }; break;
-      case 'boolean': result = { "BOOL": values[k] }; break; 
-      case 'object': result = { "S": JSON.stringify(values[k]) }; break;      
-      case 'undefined': result = { "S": "" }; break; 
-      default: result = { "S": "" }; break;                        
-    }
-
-    // append attribute to aws data
-    awsData[k] = result;
-
-    return (
-        result
-    );
-  });
 
   // debug
   //window.alert(`You made aws data:\n\n${JSON.stringify(awsData, null, 2)}`)
 
-  let postData = {
-    "TableName": { "S": "users" },
-    "Item" : awsData
-  }
+  let postData = values;
 
   // eslint-disable-next-line
   let postDataStr = JSON.stringify(postData);
@@ -72,7 +51,7 @@ const showResults = values => {
     }, 500)
   })
 
-  var url = 'https://' + AWS_API_INSTANCE + '.execute-api.us-west-2.amazonaws.com/prod/add_user?TableName=users';
+  var url = 'https://' + AWS_API_INSTANCE + '.execute-api.us-west-2.amazonaws.com/latest/user';
   var method = 'POST';
   var xhr = createCORSRequest(method, url);
 
@@ -89,8 +68,7 @@ const showResults = values => {
   };
 
   xhr.setRequestHeader('Content-Type', 'application/json');  
-  xhr.setRequestHeader('x-api-key', API_KEY);
-  xhr.setRequestHeader('TableName', 'users');  
+  //xhr.setRequestHeader('x-api-key', API_KEY);
   xhr.send(postDataStr);
 }
 
@@ -115,7 +93,6 @@ const getAllUsers = () => {
   xhr.setRequestHeader('accept-language', 'en-US,en;q=0.8');
   xhr.setRequestHeader('accept', 'application/json');
   xhr.setRequestHeader('x-api-key', API_KEY);
-  xhr.setRequestHeader('TableName', 'users');
   xhr.send();
 }
 
