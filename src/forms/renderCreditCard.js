@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
+import { Field } from 'redux-form'
+import renderField from './renderField'
 import Payment from 'payment'
 import CreditCards from 'react-credit-cards'
 import $ from 'jquery'
@@ -81,7 +83,6 @@ class renderCreditCard extends Component {
             focused={focused}
             callback={this.handleCallback}
           />
-          <form>
             <div>
               <input
                 type="tel"
@@ -96,7 +97,7 @@ class renderCreditCard extends Component {
               <input
                 type="text"
                 name="name"
-                placeholder="Name"
+                placeholder="Name"            
                 onKeyUp={this.handleInputChange}
                 onFocus={this.handleInputFocus}
               />
@@ -105,7 +106,7 @@ class renderCreditCard extends Component {
               <input
                 type="tel"
                 name="expiry"
-                placeholder="Valid Thru"
+                placeholder="Valid Thru"               
                 onKeyUp={this.handleInputChange}
                 onFocus={this.handleInputFocus}
               />
@@ -117,7 +118,6 @@ class renderCreditCard extends Component {
                 onFocus={this.handleInputFocus}
               />
             </div>
-          </form>
         </div>
       </div>
     );
@@ -126,9 +126,12 @@ class renderCreditCard extends Component {
 
 renderCreditCard.propTypes = {
   onChange: PropTypes.func, 
-  input: PropTypes.any,
   label: PropTypes.string,
   type: PropTypes.string,
+  name: PropTypes.string,
+  number: PropTypes.string,
+  expiry: PropTypes.string,
+  cvc: PropTypes.string,
   meta: PropTypes.shape({
     touched: PropTypes.any,
     error: PropTypes.any
