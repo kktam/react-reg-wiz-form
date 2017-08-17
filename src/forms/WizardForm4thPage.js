@@ -6,7 +6,9 @@ import renderChoice from './renderChoice'
 import validate from './validate'
 import normalizePhone from './normalizePhone'
 import MaskedInput from './MaskedInput'
-import renderCreditCard from './renderCreditCard'
+import Payment from 'payment'
+import CreditCards from 'react-credit-cards'
+import './renderCreditCard.css'
 
 const paymentOptions = ['Visa', 'Master Card', 'American Express', 'Pay Pal']
 let cvc = null;
@@ -28,6 +30,38 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
     };
   }
 
+  handleInputFocus = (e) => {
+    const target = e.target;
+
+    this.setState({
+      focused: target.name,
+    });
+  };
+
+  handleInputChange = (e) => {
+    const target = e.target;
+
+    if (target.name === 'number') {
+      this.setState({
+        [target.name]: target.value.replace(/ /g, ''),
+      });
+    }
+    else if (target.name === 'expiry') {
+      this.setState({
+        [target.name]: target.value.replace(/ |\//g, ''),
+      });
+    }
+    else {
+      this.setState({
+        [target.name]: target.value,
+      });
+    }
+  };
+
+  handleCallback(type, isValid) {
+    console.log(type, isValid); //eslint-disable-line no-console
+  }
+
   handleSubmit(result) {
     if (this.props.handleSubmit != null) {
       this.props.handleSubmit(result);
@@ -36,6 +70,7 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
 
   render () {
   const { handleSubmit, pristine, previousPage, submitting, paymentOptionsSelected, creditCardSelected } = this.props
+  const { name, number, expiry, cvc, focused } = this.state;
   return (
     <form onSubmit={this.handleSubmit}>
       <div>
@@ -46,15 +81,58 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
           choices={paymentOptions} />
       </div>      
       <div>       
-        <Field name="creditCard"
-          number = {this.state.number}         
-          name = {this.state.name}        
-          expiry = {this.state.expiry}        
-          cvc = {this.state.cvc}
-          type="text" 
-          component={renderCreditCard} 
-          label="Credit Card"        
-          onChange={creditCardChanged} />      
+      <div className="creditCardContainer">
+        <h1>React Credit Cards</h1>
+        <div className="creditCardForm">
+          <CreditCards
+            number={number}
+            name={name}
+            expiry={expiry}
+            cvc={cvc}
+            focused={focused}
+            callback={this.handleCallback}
+          />
+            <div>
+              <Field
+                component={renderField}
+                type="tel"
+                name="number"
+                placeholder="Card Number"
+                onKeyUp={this.handleInputChange}
+                onFocus={this.handleInputFocus}
+              />
+              <div>E.g.: 49..., 51..., 36..., 37...</div>
+            </div>
+            <div>
+              <Field
+                component={renderField}
+                type="text"
+                name="name"
+                placeholder="Name"            
+                onKeyUp={this.handleInputChange}
+                onFocus={this.handleInputFocus}
+              />
+            </div>
+            <div>
+              <Field
+                component={renderField}
+                type="tel"
+                name="expiry"
+                placeholder="Valid Thru"               
+                onKeyUp={this.handleInputChange}
+                onFocus={this.handleInputFocus}
+              />
+              <Field
+                component={renderField}
+                type="tel"
+                name="cvc"
+                placeholder="CVC"
+                onKeyUp={this.handleInputChange}
+                onFocus={this.handleInputFocus}
+              />
+            </div>
+        </div>
+      </div>     
       </div>
       <div>
         <button type="button" className="previous" onClick={previousPage}>
