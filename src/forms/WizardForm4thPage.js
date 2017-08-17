@@ -46,8 +46,11 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
           choices={paymentOptions} />
       </div>      
       <div>       
-        <Field name="creditCard" 
-          cvc = {cvc}
+        <Field name="creditCard"
+          number = {this.state.number}         
+          name = {this.state.name}        
+          expiry = {this.state.expiry}        
+          cvc = {this.state.cvc}
           type="text" 
           component={renderCreditCard} 
           label="Credit Card"        

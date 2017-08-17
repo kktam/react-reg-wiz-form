@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './renderField.css'
 
-const renderField = ({ input, disabled, copyAddressValue, label, type, meta: { touched, error } }) =>
+const renderField = ({ input, disabled, copyAddressValue, label, type, meta: { touched, error }, onKeyUp, onFocus }) =>
   <div className="renderField">
     <label>
       {label}
@@ -11,7 +11,9 @@ const renderField = ({ input, disabled, copyAddressValue, label, type, meta: { t
         {...input} 
         className="renderField__input"
         placeholder={label} 
-        type={type} />}
+        type={type}
+        onKeyUp={onKeyUp}
+        onFocus={onFocus} />}
       {disabled && <input 
         {...input} 
         className="renderField__input"
