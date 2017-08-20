@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import uuidv1 from 'node-uuid'
+import uuidv1 from 'uuid'
 import createCORSRequest from './cors'
 import { AWS_API_INSTANCE, API_KEY } from './config'
 
