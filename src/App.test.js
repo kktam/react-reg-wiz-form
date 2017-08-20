@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { createStore, combineReducers } from 'redux'
 import { reducer as reduxFormReducer } from 'redux-form'
+import { BrowserRouter as Router } from 'react-router-dom'
 import App from './App';
 import WizardForm from './forms/WizardForm'
 
@@ -25,8 +26,10 @@ const showResults = values =>
 it('renders without crashing', () => {
   const div = document.createElement('div');
   ReactDOM.render(
-    <Provider store={store}>
+    <Router>
+      <Provider store={store}>
         <App />
-    </Provider>, 
+      </Provider>
+    </Router>, 
   div);
 });
