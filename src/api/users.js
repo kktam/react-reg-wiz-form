@@ -4,12 +4,12 @@ import uuidv1 from 'uuid'
 import createCORSRequest from './cors'
 import { AWS_API_INSTANCE, API_KEY } from './config'
 
-const showResults = values => {
+const submitFormData = (values, callback) => {
 
   // validate primary key before submitting
   if (typeof values.number === "undefined" || values.number == null) {
     window.alert(`credit card number missing, please try again!\n\n`)  
-    return;  
+    return null;  
   }
 
   // append primary key to data
@@ -41,7 +41,11 @@ const showResults = values => {
   xhr.onload = function () {
     var result = xhr.responseText;
     // Success code goes here.
-    window.alert(`aws success:\n\n${JSON.stringify(result, null, 2)}`)    
+    console.log(`aws success:\n\n${JSON.stringify(result, null, 2)}`)
+
+    if (typeof callback === 'function' && callback != null) {
+      callback(result);
+    }
   };
 
   xhr.onerror = function () {
@@ -79,4 +83,4 @@ const getAllUsers = () => {
   xhr.send();
 }
 
-export default showResults;
+export default submitFormData;
