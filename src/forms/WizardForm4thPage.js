@@ -8,7 +8,7 @@ import normalizePhone from './normalizePhone'
 import MaskedInput from './MaskedInput'
 import Payment from 'payment'
 import CreditCards from 'react-credit-cards'
-import './renderCreditCard.css'
+import './WizardForm4thPage.css'
 
 const paymentOptions = ['Visa', 'Master Card', 'American Express', 'Pay Pal']
 let cvc = null;
@@ -28,6 +28,12 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
       cvc: '',
       focused: '',
     };
+  }
+
+  componentDidMount() {
+    Payment.formatCardNumber(document.querySelector('[name="number"]'));
+    Payment.formatCardExpiry(document.querySelector('[name="expiry"]'));
+    Payment.formatCardCVC(document.querySelector('[name="cvc"]'));
   }
 
   handleInputFocus = (e) => {
@@ -82,7 +88,7 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
       </div>      
       <div>       
       <div className="creditCardContainer">
-        <h1>React Credit Cards</h1>
+        <h1>Enter Credit Card information</h1>
         <div className="creditCardForm">
           <CreditCards
             number={number}
