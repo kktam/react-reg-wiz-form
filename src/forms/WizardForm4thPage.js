@@ -8,6 +8,7 @@ import normalizePhone from './normalizePhone'
 import MaskedInput from './MaskedInput'
 import Payment from 'payment'
 import CreditCards from 'react-credit-cards'
+import browser from 'detect-browser';
 import './WizardForm4thPage.css'
 
 const paymentOptions = ['Visa', 'Master Card', 'American Express', 'Pay Pal']
@@ -90,6 +91,7 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
       <div className="creditCardContainer">
         <h1>Enter Credit Card information</h1>
         <div className="creditCardForm">
+          { browser.name != "ie" &&
           <CreditCards
             number={number}
             name={name}
@@ -97,46 +99,46 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
             cvc={cvc}
             focused={focused}
             callback={this.handleCallback}
-          />
-            <div>
-              <Field
-                component={renderField}
-                type="tel"
-                name="number"
-                placeholder="Card Number"
-                onKeyUp={this.handleInputChange}
-                onFocus={this.handleInputFocus}
-              />
-              <div>E.g.: 49..., 51..., 36..., 37...</div>
-            </div>
-            <div>
-              <Field
-                component={renderField}
-                type="text"
-                name="name"
-                placeholder="Name"            
-                onKeyUp={this.handleInputChange}
-                onFocus={this.handleInputFocus}
-              />
-            </div>
-            <div>
-              <Field
-                component={renderField}
-                type="tel"
-                name="expiry"
-                placeholder="Valid Thru"               
-                onKeyUp={this.handleInputChange}
-                onFocus={this.handleInputFocus}
-              />
-              <Field
-                component={renderField}
-                type="tel"
-                name="cvc"
-                placeholder="CVC"
-                onKeyUp={this.handleInputChange}
-                onFocus={this.handleInputFocus}
-              />
-            </div>
+          /> }
+          <div>
+            <Field
+              component={renderField}
+              type="tel"
+              name="number"
+              placeholder="Card Number"
+              onKeyUp={this.handleInputChange}
+              onFocus={this.handleInputFocus}
+            />
+            <div>E.g.: 49..., 51..., 36..., 37...</div>
+          </div>
+          <div>
+            <Field
+              component={renderField}
+              type="text"
+              name="name"
+              placeholder="Name"
+              onKeyUp={this.handleInputChange}
+              onFocus={this.handleInputFocus}
+            />
+          </div>
+          <div>
+            <Field
+              component={renderField}
+              type="tel"
+              name="expiry"
+              placeholder="Valid Thru"
+              onKeyUp={this.handleInputChange}
+              onFocus={this.handleInputFocus}
+            />
+            <Field
+              component={renderField}
+              type="tel"
+              name="cvc"
+              placeholder="CVC"
+              onKeyUp={this.handleInputChange}
+              onFocus={this.handleInputFocus}
+            />
+          </div>
         </div>
       </div>     
       </div>
