@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link , Route, Redirect } from 'react-router-dom'
+import Progress from 'react-progress';
 import logo from './logo.svg';
 import './App.css';
 import WizardForm from './forms/WizardForm';
@@ -8,18 +9,33 @@ import submitFormData from './api/users'
 
 // company information
 const COMPANY = "ACME"
+// constants
+const MAX_PERCENT = 100
 
 class App extends Component {
   constructor(props){
     super(props)
     this.onSubmitForm = this.onSubmitForm.bind(this)
-    this.onSubmitCallback = this.onSubmitCallback.bind(this)                
+    this.onSubmitCallback = this.onSubmitCallback.bind(this) 
+    this.tick = this.tick.bind(this)                   
     this.state = {
+      submitting: false,
+      submitPercent: 0,
+      submitPeriod: 300,
       submitCompleted: false
     };
   }
   
+  tick () {
+    this.setState({submitPercent: this.state.submitPercent + 1});
+    if (this.state.secondsRemaining >= MAX_PERCENT) {
+      clearInterval(this.interval);
+    }
+  }
+
   onSubmitForm (values) {
+    this.setState( { submitting : true } );   
+    this.interval = setInterval(this.tick, this.state.submitPeriod); 
     submitFormData(values, this.onSubmitCallback);
   }
 
@@ -27,6 +43,7 @@ class App extends Component {
     if (typeof results !== "undefined" && results != null) {
       // record the form submit as completed
       this.setState( { submitCompleted : true } );
+      this.setState( { submitting : false } );         
     }
   }
 
@@ -37,6 +54,13 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2> {COMPANY} - Sign up form</h2>
         </div>
+        { this.state.submitting && 
+          <Progress 
+            percent={this.state.submitPercent}
+            color="rainbow"
+            height="5"
+            speed={this.state.submitPeriod}
+          /> }
         <p className="App-intro">
         </p>
         <Route exact={true} path="/" render={() => (
