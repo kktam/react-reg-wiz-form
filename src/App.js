@@ -5,7 +5,7 @@ import logo from './logo.svg';
 import './App.css';
 import WizardForm from './forms/WizardForm';
 import RegistrationSuccess from './components/RegistrationSuccess';
-import submitFormData from './api/users'
+import { getUserById, submitFormData } from './api/users'
 
 // company information
 const COMPANY = "ACME"
@@ -15,6 +15,9 @@ const MAX_PERCENT = 100
 class App extends Component {
   constructor(props){
     super(props)
+    this.onFinalFormValidation = this.onFinalFormValidation.bind(this)
+    this.onFinalFormValidationCallbackPass = this.onFinalFormValidationCallbackPass.bind(this)        
+    this.onFinalFormValidationCallbackFail = this.onFinalFormValidationCallbackFail.bind(this)        
     this.onSubmitForm = this.onSubmitForm.bind(this)
     this.onSubmitCallback = this.onSubmitCallback.bind(this) 
     this.tick = this.tick.bind(this)                   
@@ -24,6 +27,7 @@ class App extends Component {
       submitPeriod: 300,
       submitCompleted: false
     };
+    this.submitFormData = null;
   }
   
   tick () {
@@ -33,7 +37,42 @@ class App extends Component {
     }
   }
 
-  onSubmitForm (values) {
+  onFinalFormValidation(values) {
+    // backup form data
+    this.submitFormData = values;
+
+    this.setState( { submitting : true } );   
+    this.interval = setInterval(this.tick, this.state.submitPeriod);
+
+    // validate if this request is already is database
+    getUserById(values.number.replace(/ /g, ""), this.onFinalFormValidationCallbackPass, this.onFinalFormValidationCallbackFail);
+  }
+
+  onFinalFormValidationCallbackPass(results) {
+    if (typeof results === "undefined" || results == null) {
+      // no good, there is a duplicate.
+      window.alert('[Error 2] The credit card verification is not available at this time, please try again later...');    
+      return;
+    }
+
+    if (results.hasOwnProperty("id")) {
+      if (results.id == this.submitFormData.number) {
+        // no good, there is a duplicate.
+        window.alert('The credit card has already been registered!\nPlease call call-center for support if this is not you.');
+        return;
+      }
+    }
+
+    // go on to submit the form
+    this.onSubmitForm(this.submitFormData);
+  }
+
+  onFinalFormValidationCallbackFail(results) {
+    // no good, there is a duplicate.
+    window.alert('[Error 1] The credit card verification is not available at this time, please try again later...');    
+  }
+
+  onSubmitForm(values) {
     this.setState( { submitting : true } );   
     this.interval = setInterval(this.tick, this.state.submitPeriod); 
     submitFormData(values, this.onSubmitCallback);
