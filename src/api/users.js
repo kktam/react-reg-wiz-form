@@ -40,16 +40,18 @@ export const submitFormData = (values, callback) => {
 
   xhr.onload = function () {
     var result = xhr.responseText;
+    var resultJson = JSON.parse(result);
     // Success code goes here.
     console.log(`aws success:\n\n${JSON.stringify(result, null, 2)}`)
 
     if (typeof callback === 'function' && callback != null) {
-      callback(result);
+      callback(resultJson);
     }
   };
 
   xhr.onerror = function () {
-    var result = xhr.responseText;    
+    var result = xhr.responseText;  
+    var resultJson = JSON.parse(result);      
     // Error code goes here.
     window.alert(`aws failed:\n\n${JSON.stringify(result, null, 2)}`)    
   };
@@ -61,33 +63,35 @@ export const submitFormData = (values, callback) => {
 
 // eslint-disable-next-line
 export const getUserById = (id, callbackPass, callbackFail) => {
-  var url = 'https://' + AWS_API_INSTANCE + '.execute-api.us-west-2.amazonaws.com/prod/user/' + id;
+  var url = 'https://' + AWS_API_INSTANCE + '.execute-api.us-west-2.amazonaws.com/latest/user/' + id;
   var method = 'GET';
   var xhr = createCORSRequest(method, url);
 
   xhr.onload = function () {
     var result = xhr.responseText;
+    var resultJson = JSON.parse(result);       
     // Success code goes here.
     console.log(`aws success:\n\n${JSON.stringify(result, null, 2)}`)
     
     if (typeof callbackPass === 'function' && callbackPass != null) {
-      callbackPass(result);
+      callbackPass(resultJson);
     }
   };
 
   xhr.onerror = function () {
-    var result = xhr.responseText;    
+    var result = xhr.responseText;
+    var resultJson = JSON.parse(result);     
     // Error code goes here.
     console.log(`aws failed:\n\n${JSON.stringify(result, null, 2)}`)  
     
     if (typeof callbackFail === 'function' && callbackFail != null) {
-      callbackFail(result);
+      callbackFail(resultJson);
     }    
   };
 
   xhr.setRequestHeader('accept-language', 'en-US,en;q=0.8');
   xhr.setRequestHeader('accept', 'application/json');
-  xhr.setRequestHeader('x-api-key', API_KEY);
+  //xhr.setRequestHeader('x-api-key', API_KEY);
   xhr.send();
 }
 

@@ -56,7 +56,7 @@ class App extends Component {
     }
 
     if (results.hasOwnProperty("id")) {
-      if (results.id == this.submitFormData.number) {
+      if (results.id == this.submitFormData.number.replace(/ /g, "")) {
         // no good, there is a duplicate.
         window.alert('The credit card has already been registered!\nPlease call call-center for support if this is not you.');
         return;
@@ -105,7 +105,7 @@ class App extends Component {
         <Route exact={true} path="/" render={() => (
           this.state.submitCompleted ?
           ( <Redirect to="/complete"/> ) :
-          ( <WizardForm onSubmit={this.onSubmitForm} /> )
+          ( <WizardForm onSubmit={this.onFinalFormValidation} /> )
         )}/>
         <Route path="/complete" component={RegistrationSuccess} />
         <div className="App-footer">
