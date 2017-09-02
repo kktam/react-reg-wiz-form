@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import belle from 'belle'
 import { connect } from 'react-redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import renderField from './renderField'
@@ -10,6 +11,8 @@ import Payment from 'payment'
 import CreditCards from 'react-credit-cards'
 import browser from 'detect-browser';
 import './WizardForm4thPage.css'
+
+var Button = belle.Button;
 
 const paymentOptions = ['Visa', 'Master Card', 'American Express', 'Pay Pal']
 let cvc = null;
@@ -143,12 +146,12 @@ let WizardForm4thPage = class WizardForm4thPage extends Component {
       </div>     
       </div>
       <div>
-        <button type="button" className="previous" onClick={previousPage}>
+        <Button type="button" className="previous" onClick={previousPage}>
           Previous
-        </button>
-        <button type="submit" disabled={pristine || submitting}>
+        </Button>
+        <Button type="submit" disabled={pristine || submitting}>
           Submit
-        </button>
+        </Button>
       </div>
     </form>
   )}

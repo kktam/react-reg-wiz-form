@@ -1,5 +1,8 @@
 import React from 'react'
+import belle from 'belle'
 import styles from './renderField.css'
+
+var TextInput = belle.TextInput;
 
 const renderField = ({ input, disabled, copyAddressValue, label, type, meta: { touched, error }, onKeyUp, onFocus }) =>
   <div className="renderField">
@@ -7,14 +10,14 @@ const renderField = ({ input, disabled, copyAddressValue, label, type, meta: { t
       {label}
     </label>
     <div>
-      {!disabled && <input 
+      {!disabled && <TextInput 
         {...input} 
         className="renderField__input"
         placeholder={label} 
         type={type}
         onKeyUp={onKeyUp}
         onFocus={onFocus} />}
-      {disabled && <input 
+      {disabled && <TextInput 
         {...input} 
         className="renderField__input"
         placeholder={label} 
