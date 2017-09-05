@@ -28,7 +28,7 @@ it('renders without crashing', () => {
   ReactDOM.render(
     <Router>
       <Provider store={store}>
-        <App />
+        <App env='test'/>
       </Provider>
     </Router>, 
   div);

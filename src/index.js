@@ -15,7 +15,7 @@ const store = (window.devToolsExtension
 ReactDOM.render(
     <Router>
         <Provider store={store}>
-            <App />
+            <App env='prod'/>
         </Provider>
     </Router>, 
     document.getElementById('root'));

@@ -25,6 +25,8 @@ class App extends Component {
     this.onSubmitCallback = this.onSubmitCallback.bind(this) 
     this.tick = this.tick.bind(this)                 
     this.state = {
+      env: this.props.env,
+
       backgroundUrl: null,
 
       submitting: false,
@@ -38,6 +40,10 @@ class App extends Component {
   }
 
   getBackground () {
+    if (this.state.env !== 'prod') {
+      return;
+    }
+    
     fetch(URL_BACKGROUND)
       .then(res => res)
       .then(data => {
