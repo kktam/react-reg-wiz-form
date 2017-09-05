@@ -12,23 +12,38 @@ import { getUserById, submitFormData } from './api/users'
 const COMPANY = "ACME"
 // constants
 const MAX_PERCENT = 100
+const URL_BACKGROUND = 'https://source.unsplash.com/1900x300/?business'
 
 class App extends Component {
   constructor(props){
     super(props)
+    this.getBackground = this.getBackground.bind(this)
     this.onFinalFormValidation = this.onFinalFormValidation.bind(this)
     this.onFinalFormValidationCallbackPass = this.onFinalFormValidationCallbackPass.bind(this)        
     this.onFinalFormValidationCallbackFail = this.onFinalFormValidationCallbackFail.bind(this)        
     this.onSubmitForm = this.onSubmitForm.bind(this)
     this.onSubmitCallback = this.onSubmitCallback.bind(this) 
-    this.tick = this.tick.bind(this)                   
+    this.tick = this.tick.bind(this)                 
     this.state = {
+      backgroundUrl: null,
+
       submitting: false,
       submitPercent: 0,
       submitPeriod: 300,
       submitCompleted: false
     };
     this.submitFormData = null;
+
+    this.getBackground();
+  }
+
+  getBackground () {
+    fetch(URL_BACKGROUND)
+      .then(res => res)
+      .then(data => {
+        const { url } = data
+        this.setState({ backgroundUrl: url })
+      })
   }
   
   tick () {
@@ -88,9 +103,15 @@ class App extends Component {
   }
 
   render() {
+    // Pass new image to background
+    const style = {
+      backgroundImage: `url(${this.state.backgroundUrl})`,
+      backgroundSize: 'cover',
+    }
+
     return (
       <div className="App">
-        <div className="App-header">
+        <div className="App-header" style={style}>
           <img src={logo} className="App-logo" alt="logo" />
           <h2> {COMPANY} - Sign up form</h2>
         </div>
