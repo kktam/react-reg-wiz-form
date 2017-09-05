@@ -1,7 +1,10 @@
 import React from 'react'
+import belle from 'belle'
 import { Field, reduxForm } from 'redux-form'
 import validate from './validate'
 import renderField from './renderField'
+
+var Button = belle.Button;
 
 const WizardFormFirstPage = props => {
   const { handleSubmit } = props
@@ -20,9 +23,9 @@ const WizardFormFirstPage = props => {
         label="Last Name"
       />
       <div>
-        <button type="submit" className="next">
+        <Button type="submit" className="next">
           Next
-        </button>
+        </Button>
       </div>
     </form>
   )

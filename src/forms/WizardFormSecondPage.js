@@ -1,7 +1,10 @@
 import React from 'react'
+import belle from 'belle'
 import { Field, reduxForm } from 'redux-form'
 import validate from './validate'
 import renderField from './renderField'
+
+var Button = belle.Button;
 
 const renderError = ({ meta: { touched, error } }) =>
   touched && error
@@ -40,12 +43,12 @@ const WizardFormSecondPage = props => {
         </div>
       </div>
       <div>
-        <button type="button" className="previous" onClick={previousPage}>
+        <Button type="button" className="previous" onClick={previousPage}>
           Previous
-        </button>
-        <button type="submit" className="next">
+        </Button>
+        <Button type="submit" className="next">
           Next
-        </button>
+        </Button>
       </div>
     </form>
   )

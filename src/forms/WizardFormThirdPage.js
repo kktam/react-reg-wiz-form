@@ -1,4 +1,5 @@
 import React from 'react'
+import belle from 'belle'
 import { connect } from 'react-redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import renderField from './renderField'
@@ -6,6 +7,8 @@ import renderChoice from './renderChoice'
 import renderGeoField from './renderGeoField'
 import validate from './validate'
 import normalizePhone from './normalizePhone'
+
+var Button = belle.Button;
 
 function addressChanged(val) {
   console.log("GEO Selected: " + JSON.stringify(val));
@@ -59,12 +62,12 @@ let WizardFormThirdPage = props => {
         </div>
       </div>
       <div>
-        <button type="button" className="previous" onClick={previousPage}>
+        <Button type="button" className="previous" onClick={previousPage}>
           Previous
-        </button>
-        <button type="submit" className="next">
+        </Button>
+        <Button type="submit" className="next">
           Next
-        </button>
+        </Button>
       </div>
     </form>
   )
