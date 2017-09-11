@@ -6,7 +6,8 @@ import logo from './logo.svg';
 import './App.css';
 import WizardForm from './forms/WizardForm';
 import RegistrationSuccess from './components/RegistrationSuccess';
-import { getUserById, submitFormData } from './api/users'
+import { getUserById, submitFormData } from './api/users';
+import Gem from './animation/Gem';
 
 // company information
 const COMPANY = "ACME"
@@ -118,8 +119,10 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header" style={style}>
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2> {COMPANY} - Sign up form</h2>
+          <Gem width="180" height="60" 
+               lineColor="rgba(245,252,210,0.1)"
+               className="App-logo-svg" ></Gem>
+          <div className="App-Title"> {COMPANY} - Sign up form</div>
         </div>
         { this.state.submitting && 
           <Progress 
@@ -137,7 +140,6 @@ class App extends Component {
         )}/>
         <Route path="/complete" component={RegistrationSuccess} />
         <div className="App-footer">
-          <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC 3.0 BY</a></div>
         </div>
       </div>
     );
