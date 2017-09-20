@@ -14,6 +14,10 @@ import Snap from 'snapsvg-cjs'
 import {TweenLite, Sine} from 'gsap'
 import Delaunay from 'delaunay-fast'
 
+// Redux stores
+import { EnvOptions, getEnv } from '../store/envAction'
+import appEnvStore from '../store/envStore';
+
 export default class Gem extends Component {
 
   // properties
@@ -48,6 +52,11 @@ export default class Gem extends Component {
   }
 
   componentDidMount() {
+    const appEnvState = appEnvStore.getState().env;
+    if (appEnvState == EnvOptions.TEST) {
+      return;
+    }
+
     this.s = Snap("#svg");
 
     this.triangles = [];

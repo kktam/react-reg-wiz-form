@@ -9,6 +9,10 @@ import RegistrationSuccess from './components/RegistrationSuccess';
 import { getUserById, submitFormData } from './api/users';
 import Gem from './animation/Gem';
 
+// Redux stores
+import { EnvOptions, setEnv } from './store/envAction'
+import appEnvStore from './store/envStore';
+
 // company information
 const COMPANY = "ACME"
 // constants
@@ -36,6 +40,16 @@ class App extends Component {
       submitCompleted: false
     };
     this.submitFormData = null;
+
+    // log global store
+    var envOption;
+    switch (this.props.env) {
+      case 'prod': envOption = EnvOptions.PROD; break;
+      case 'qa': envOption = EnvOptions.QA; break;
+      case 'dev': envOption = EnvOptions.DEVELOPMENT; break; 
+      case 'test': envOption = EnvOptions.TEST; break;               
+    }
+    appEnvStore.dispatch(setEnv(envOption));
 
     this.getBackground();
   }
