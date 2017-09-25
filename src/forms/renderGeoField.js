@@ -122,9 +122,9 @@ class renderGeoField extends Component {
             onSuggestSelect={this.onSuggestSelect}
             styles={styles}
           />}          
-          <Button type="button" className="previous" onClick={this.onFindNearMe}>
+          {this.state.geolocation && <Button type="button" className="previous" onClick={this.onFindNearMe}>
             Find Near Me
-          </Button>          
+          </Button>}      
           {touched &&
             error &&
             <span>
