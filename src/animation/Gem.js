@@ -126,7 +126,7 @@ export default class Gem extends Component {
           "M"+this.vertices[this.triangles[i-1]][0]+" "+this.vertices[this.triangles[i-1]][1]+
           "L"+this.vertices[this.triangles[i-2]][0]+" "+this.vertices[this.triangles[i-2]][1]+
           "L"+this.vertices[this.triangles[i-3]][0]+" "+this.vertices[this.triangles[i-3]][1]+"z";
-        var c = this.s.path(cString).attr({  fill: "rgba(255,225,215,"+i*.004+")",
+        var c = this.s.path(cString).attr({  fill: "rgba(255,225,215,"+i*.012+")",
         stroke: this.lineColor,
         strokeWidth: 2});
         this.triangleHolder.add(c)  

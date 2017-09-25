@@ -8,6 +8,7 @@ import WizardForm from './forms/WizardForm';
 import RegistrationSuccess from './components/RegistrationSuccess';
 import { getUserById, submitFormData } from './api/users';
 import Gem from './animation/Gem';
+import { getImageAverageColorOnElement } from './util/getImageAverageColor';
 
 // Redux stores
 import { EnvOptions, setEnv } from './store/envAction'
@@ -20,9 +21,15 @@ const MAX_PERCENT = 100
 const URL_BACKGROUND = 'https://source.unsplash.com/1900x300/?business'
 
 class App extends Component {
+  backgroundAvgColor = null;
+  imagePromise = null;
+  backgroundNode = null;
+
   constructor(props){
     super(props)
     this.getBackground = this.getBackground.bind(this)
+    this.onBackgroundLoaded = this.onBackgroundLoaded.bind(this)
+    this.onRendered = this.onRendered.bind(this)
     this.onFinalFormValidation = this.onFinalFormValidation.bind(this)
     this.onFinalFormValidationCallbackPass = this.onFinalFormValidationCallbackPass.bind(this)        
     this.onFinalFormValidationCallbackFail = this.onFinalFormValidationCallbackFail.bind(this)        
@@ -54,18 +61,51 @@ class App extends Component {
     this.getBackground();
   }
 
+  componentWillMount() {
+  }
+
+  componentDidMount() {
+    if (this.imagePromise == null) {
+      return;
+    }
+
+    setTimeout(this.onRendered, 5000);
+  }
+
+  componentDidUpdate() {
+  }
+
+  onRendered() {
+    this.imagePromise.then(this.onBackgroundLoaded, null);
+  }
+
+  /*
+   * Get a randomized image to decorate the application
+   */ 
   getBackground () {
     if (this.state.env !== 'prod') {
       return;
     }
     
-    fetch(URL_BACKGROUND)
+    this.imagePromise = fetch(URL_BACKGROUND)
       .then(res => res)
       .then(data => {
         const { url } = data
         this.setState({ backgroundUrl: url })
       })
   }
+
+  /*
+   * Event triggered when the background image is loaded
+   * This function will analyze the background image, and 
+   * adjust the color of the Gem to ensure the Gem always
+   * stands out from the background
+   */
+  onBackgroundLoaded() {
+    // analyze the background image
+    this.backgroundAvgColor = getImageAverageColorOnElement(this.backgroundNode);
+    console.log('Background average color = ' + JSON.stringify(this.backgroundAvgColor));
+  }  
   
   tick () {
     this.setState({submitPercent: this.state.submitPercent + 1});
@@ -125,16 +165,21 @@ class App extends Component {
 
   render() {
     // Pass new image to background
-    const style = {
+    const backgroundStyle = {
       backgroundImage: `url(${this.state.backgroundUrl})`,
       backgroundSize: 'cover',
     }
 
+    const imageStyle = {
+      display: 'hidden',
+    }    
+
     return (
       <div className="App">
-        <div className="App-header" style={style}>
+        <div id="App-header" className="App-header" 
+             style={backgroundStyle}>
           <Gem width="180" height="60" 
-               lineColor="rgba(245,252,210,0.1)"
+               lineColor="rgba(245,252,210,0.4)"
                timeout="200"
                className="App-logo-svg" ></Gem>
           <div className="App-Title"> {COMPANY} - Sign up form</div>
@@ -156,6 +201,12 @@ class App extends Component {
         <Route path="/complete" component={RegistrationSuccess} />
         <div className="App-footer">
         </div>
+        <img id="App-BkImg" src={URL_BACKGROUND} 
+               alt="Rotating background" 
+               width="0px;" 
+               height="0px;"
+               style ={imageStyle}
+               ref={node => this.backgroundNode = node} />
       </div>
     );
   }
