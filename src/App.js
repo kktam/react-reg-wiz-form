@@ -135,6 +135,7 @@ class App extends Component {
         <div className="App-header" style={style}>
           <Gem width="180" height="60" 
                lineColor="rgba(245,252,210,0.1)"
+               timeout="200"
                className="App-logo-svg" ></Gem>
           <div className="App-Title"> {COMPANY} - Sign up form</div>
         </div>

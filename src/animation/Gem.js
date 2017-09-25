@@ -24,6 +24,7 @@ export default class Gem extends Component {
   width = 0;
   height = 0;
   lineColor = "rgba(255,255,255,0.1)";
+  timeout = 0;  // time in mSec
 
   s = null;
   triangles = [];
@@ -39,7 +40,8 @@ export default class Gem extends Component {
     this.height = (props.height) ? props.height : 50;
     if (props.height) {
       this.lineColor = props.lineColor;
-    }  
+    }
+    this.timeout = (props.timeout) ? props.timeout : 100;
 
     this.getRandomPoint = this.getRandomPoint.bind(this);
     this.tweenPoint = this.tweenPoint.bind(this);
@@ -49,6 +51,7 @@ export default class Gem extends Component {
     this.makeObj = this.makeObj.bind(this);
     this.draw = this.draw.bind(this);
     this.doDelaunay = this.doDelaunay.bind(this);
+    this.gemTimeout = this.gemTimeout.bind(this);
   }
 
   componentDidMount() {
@@ -129,11 +132,15 @@ export default class Gem extends Component {
         this.triangleHolder.add(c)  
       }
   }
-    
+  
   doDelaunay() {
     this.triangles = Delaunay.triangulate(this.vertices);
     if(this.triangles.length > 2){ this.draw() };
     
+    setTimeout(this.gemTimeout, this.timeout);
+  }
+
+  gemTimeout() {
     window.requestAnimationFrame(this.doDelaunay);
   }
 
