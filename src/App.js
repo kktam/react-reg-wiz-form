@@ -76,7 +76,8 @@ class App extends Component {
   }
 
   onRendered() {
-    this.imagePromise.then(this.onBackgroundLoaded, null);
+    // disable analysis until Canvas issue is resolved.
+    //this.imagePromise.then(this.onBackgroundLoaded, null);
   }
 
   /*
