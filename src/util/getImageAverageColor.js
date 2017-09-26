@@ -1,11 +1,8 @@
-/* 
- * Algorithm from http://jsfiddle.net/xLF38/
- */
 export function getImageAverageColorFromUrl(url, callback) {
     var blockSize = 5, // only visit every 5 pixels
         defaultRGB = { r: 0, g: 0, b: 0 }, 
-        canvas = document.createElement('canvas'),
-        context = canvas.getContext && canvas.getContext('2d'),
+        canvas = window.document.getElementById('canvas'),
+        context = canvas.getContext('2d'),
         data, width, height,
         i = -4,
         length,
@@ -25,7 +22,7 @@ export function getImageAverageColorFromUrl(url, callback) {
         height = imageObj.height;
 
         try {
-            data = context.getImageData(0, 0, width, height);
+            data = context.getImageData();
         } catch (e) {
         /* security error, img on diff domain */alert('x');
             return defaultRGB;
@@ -53,10 +50,9 @@ export function getImageAverageColorFromUrl(url, callback) {
     }
 }
 
-export function getImageAverageColorOnElement(imgEl) {
+export function getImageAverageColorOnElement(imgEl, canvas) {
     var blockSize = 5, // only visit every 5 pixels
         defaultRGB = { r: 0, g: 0, b: 0 }, 
-        canvas = window.document.createElement('canvas'),
         context = canvas.getContext('2d'),
         data, width, height,
         i = -4,
@@ -73,26 +69,28 @@ export function getImageAverageColorOnElement(imgEl) {
 
     context.drawImage(imgEl, 0, 0);
 
-    try {
-        data = context.getImageData(0, 0, width / 2, height / 2);
-    } catch (e) {
-        /* security error, img on diff domain */
-        return defaultRGB;
-    }
-
-    length = data.data.length;
-
-    while ((i += blockSize * 4) < length) {
-        ++count;
-        rgb.r += data.data[i];
-        rgb.g += data.data[i + 1];
-        rgb.b += data.data[i + 2];
-    }
-
-    // ~~ used to floor values
-    rgb.r = ~~(rgb.r / count);
-    rgb.g = ~~(rgb.g / count);
-    rgb.b = ~~(rgb.b / count);
-
-    return rgb;
+    setTimeout(function () {
+        try {
+            data = context.getImageData();
+        } catch (e) {
+            /* security error, img on diff domain */
+            return defaultRGB;
+        }
+    
+        length = data.data.length;
+    
+        while ((i += blockSize * 4) < length) {
+            ++count;
+            rgb.r += data.data[i];
+            rgb.g += data.data[i + 1];
+            rgb.b += data.data[i + 2];
+        }
+    
+        // ~~ used to floor values
+        rgb.r = ~~(rgb.r / count);
+        rgb.g = ~~(rgb.g / count);
+        rgb.b = ~~(rgb.b / count);
+    
+        return rgb;
+    }, 5000);
 }

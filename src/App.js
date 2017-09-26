@@ -8,7 +8,7 @@ import WizardForm from './forms/WizardForm';
 import RegistrationSuccess from './components/RegistrationSuccess';
 import { getUserById, submitFormData } from './api/users';
 import Gem from './animation/Gem';
-import { getImageAverageColorOnElement } from './util/getImageAverageColor';
+import { getImageAverageColorOnElement, getImageAverageColorFromUrl } from './util/getImageAverageColor';
 
 // Redux stores
 import { EnvOptions, setEnv } from './store/envAction'
@@ -24,11 +24,13 @@ class App extends Component {
   backgroundAvgColor = null;
   imagePromise = null;
   backgroundNode = null;
+  backgroundCanvas = null;
 
   constructor(props){
     super(props)
     this.getBackground = this.getBackground.bind(this)
     this.onBackgroundLoaded = this.onBackgroundLoaded.bind(this)
+    this.onBackgroundAvgComplete = this.onBackgroundAvgComplete.bind(this)
     this.onRendered = this.onRendered.bind(this)
     this.onFinalFormValidation = this.onFinalFormValidation.bind(this)
     this.onFinalFormValidationCallbackPass = this.onFinalFormValidationCallbackPass.bind(this)        
@@ -76,7 +78,12 @@ class App extends Component {
   }
 
   onRendered() {
-    this.imagePromise.then(this.onBackgroundLoaded, null);
+    //this.imagePromise.then(this.onBackgroundLoaded, null);
+    getImageAverageColorFromUrl(URL_BACKGROUND, this.onBackgroundAvgComplete)
+  }
+
+  onBackgroundAvgComplete(avg) {
+    console.log('Avg = ' + JSON.stringify(avg));
   }
 
   /*
@@ -103,7 +110,7 @@ class App extends Component {
    */
   onBackgroundLoaded() {
     // analyze the background image
-    this.backgroundAvgColor = getImageAverageColorOnElement(this.backgroundNode);
+    this.backgroundAvgColor = getImageAverageColorOnElement(this.backgroundNode, this.backgroundCanvas);
     console.log('Background average color = ' + JSON.stringify(this.backgroundAvgColor));
   }  
   
@@ -206,7 +213,10 @@ class App extends Component {
                width="0px;" 
                height="0px;"
                style ={imageStyle}
-               ref={node => this.backgroundNode = node} />
+               ref={node => this.backgroundNode = node}
+               onLoad={this.onBackgroundLoaded} />
+        <canvas id="canvas" width="0" height="0" 
+               ref={node => this.backgroundCanvas = node}/>       
       </div>
     );
   }
