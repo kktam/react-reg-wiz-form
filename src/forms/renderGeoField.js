@@ -64,7 +64,7 @@ class renderGeoField extends Component {
 
     this.setState({ select: suggest.label })
     if (this.props.input.onChange != null) {
-      this.props.input.onChange(suggest.label);
+      this.props.input.onChange(suggest);
     }    
   }
   

@@ -153,7 +153,7 @@ export default class Gem extends Component {
     return (
       <svg id="svg" 
            className="App-logo-svg"
-           styles={styles}
+           Styles={styles}
            ref={node => this.node = node}></svg>
     );  
   }
