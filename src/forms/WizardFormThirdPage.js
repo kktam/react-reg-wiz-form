@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import belle from 'belle'
 import { connect } from 'react-redux'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { Field, reduxForm, formValueSelector, getFormValues, getState } from 'redux-form'
 import renderField from './renderField'
 import renderChoice from './renderChoice'
 import renderGeoField from './renderGeoField'
 import validate from './validate'
 import normalizePhone from './normalizePhone'
+import WizardFormFirstPage from './WizardFormFirstPage'
+
 // Redux stores
 import { setKeyValue } from '../store/globalCacheAction'
 import globalCacheStore from '../store/globalCacheStore';
@@ -20,23 +22,20 @@ let WizardFormThirdPage = class WizardForm4thPage extends Component {
     this.addressChanged = this.addressChanged.bind(this);
   }
 
-  addressChanged(val) {
+  addressChanged(val) {  
     console.log("GEO Selected: " + JSON.stringify(val));
 
-    try {
-      // localstorage or sessionstorage init
-      window.sessionStorage
-    } catch (e) {
-      // they are not defined, use a library
-      console.log(e); // look at error
-      
-      // if localStorage is not defined, use a library
-      //window.localStorage = require('web-storage')().localStorage;
-    }
+    //var formValues = getFormValues("WizardFormFirstPage");
+    //console.log("first form data = " + formValues);
 
     // TBD - make a session key
     var session = 123;
-    globalCacheStore.dispatch(setKeyValue(session, val));    
+    globalCacheStore.dispatch(setKeyValue(session, val));  
+    
+    // save special items in Redux form
+    //this.props.change("WizardFormThirdPage", "address", val.label);    
+    //this.props.change("WizardFormThirdPage", "address_componments", JSON.stringify(val.address_components));
+    //this.props.change("WizardFormThirdPage", "address_geometry", JSON.stringify(val.geometry));    
   }
 
   render() {
@@ -65,7 +64,7 @@ let WizardFormThirdPage = class WizardForm4thPage extends Component {
           {isBillingSameValue && <Field name="billing_address"
             type="text" component={renderField}
             label="Billing Address"
-            copyAddressValue={address}
+            copyAddressValue={address.label}
             disabled={isBillingSameValue} />}
         </div>
         <div>
@@ -110,7 +109,7 @@ const selector = formValueSelector('wizard')
 
 WizardFormThirdPage = connect(
   state => ({
-    isBillingSameValue: selector(state, 'isBillingSame'),
+    isBillingSameValue: selector(state, 'isBillingSame'),  
     address: selector(state, 'address')
   })
 )(WizardFormThirdPage)

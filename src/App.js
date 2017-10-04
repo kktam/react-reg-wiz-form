@@ -13,6 +13,8 @@ import { getImageAverageColorOnElement } from './util/getImageAverageColor';
 // Redux stores
 import { EnvOptions, setEnv } from './store/envAction'
 import appEnvStore from './store/envStore';
+import { getValue } from './store/globalCacheAction'
+import globalCacheStore from './store/globalCacheStore';
 
 // company information
 const COMPANY = "ACME"
@@ -151,6 +153,13 @@ class App extends Component {
   }
 
   onSubmitForm(values) {
+    // TBD - make a session key
+    var session = 123;
+    let val = globalCacheStore.dispatch(getValue(session)); 
+
+    console.log("getting from globalCacheStore: " + JSON.stringify(val));
+
+
     this.setState( { submitting : true } );   
     this.interval = setInterval(this.tick, this.state.submitPeriod); 
     submitFormData(values, this.onSubmitCallback);
