@@ -7,6 +7,14 @@
 
 This is a custom user registration form that uses React, AWS API and Lambda to store user registration for services in Dynamo DB.
 
+This application is part of a suite of components with Amazon Web Service (AWS). The purpose of the this application is to provide an user interface to collect customer registration information.
+
+![Application workflow diagram](https://github.com/kktam/react-reg-wiz-form/blob/master/doc/images/User%20registration.png)
+
+Below is a sample screenshot of the application
+
+![Screenshot](https://github.com/kktam/react-reg-wiz-form/blob/master/doc/images/main_menu.png)
+
 
 [build-badge]: https://api.travis-ci.org/kktam/react-reg-wiz-form.svg?branch=master
 [build]: https://travis-ci.org/kktam/react-reg-wiz-form.svg?branch=master
