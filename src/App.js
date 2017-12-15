@@ -11,16 +11,19 @@ import Gem from './animation/Gem';
 import { getImageAverageColorOnElement } from './util/getImageAverageColor';
 
 // Redux stores
-import { EnvOptions, setEnv } from './store/envAction'
+import { EnvOptions, setEnv } from './store/envAction';
 import appEnvStore from './store/envStore';
-import { getValue } from './store/globalCacheAction'
+import { getValue } from './store/globalCacheAction';
 import globalCacheStore from './store/globalCacheStore';
 
 // company information
-const COMPANY = "ACME"
+const COMPANY = "ACME";
 // constants
-const MAX_PERCENT = 100
-const URL_BACKGROUND = 'https://source.unsplash.com/1900x300/?business'
+const MAX_PERCENT = 100;
+
+// a CORS proxy that allows enables cross-origin requests to anywhere.
+const URL_CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+const URL_BACKGROUND = 'https://source.unsplash.com/1900x300/?business';
 
 class App extends Component {
   backgroundAvgColor = null;
@@ -90,7 +93,7 @@ class App extends Component {
       return;
     }
     
-    this.imagePromise = fetch(URL_BACKGROUND)
+    this.imagePromise = fetch(URL_CORS_PROXY + URL_BACKGROUND)
       .then(res => res)
       .then(data => {
         const { url } = data
