@@ -176,7 +176,7 @@ class App extends Component {
   render() {
     // Pass new image to background
     const backgroundStyle = {
-      backgroundImage: `url(${this.state.backgroundUrl})`,
+      backgroundImage: (this.state.backgroundUrl == null) ? 'url("")' : `url(${this.state.backgroundUrl})`,
       backgroundSize: 'cover',
     }
 
