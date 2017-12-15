@@ -29,4 +29,6 @@ Below is a sample screenshot of the application
 
 A live demo of this project is located at [here](https://d2pmhg6dybu2tk.cloudfront.net).
 
+A new live demo of this project is also available at [Windows Azure](https://react-reg-wiz-form.azurewebsites.net/)
+
 # MIT License 2017 - Nelson Tam
